@@ -27,7 +27,16 @@
 #endif
 
 
+//#define FOTA_URL "https://github.com/tobozo/ESP32-ENC28J60/raw/main/examples/FOTA/bin/firmware.json"
+
 #include <ESP32-targz.h>
+#define FOTA_URL "https://github.com/tobozo/ESP32-ENC28J60/raw/main/examples/FOTA/bin/firmware.gz.json"
+
+//#include <flashz.hpp>
+//#define FOTA_URL "https://github.com/tobozo/ESP32-ENC28J60/raw/main/examples/FOTA/bin/firmware.zz.json"
+
+
+
 #include <esp32FOTA.hpp> // https://github.com/chrisjoyce911/esp32FOTA
 #include <debug/test_fota_common.h>
 
@@ -36,9 +45,8 @@ int firmware_version_major  = 1;
 int firmware_version_minor  = 1;
 int firmware_version_patch  = 0;
 
-#if !defined FOTA_URL
-  #define FOTA_URL "https://phpsecu.re/esp32/esp32fota/firmware.json"
-#endif
+
+
 
 const char* firmware_name   = "esp32-fota-http";
 const bool check_signature  = false;
