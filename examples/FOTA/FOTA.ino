@@ -27,37 +27,39 @@
 #endif
 
 
-//#define FOTA_URL "https://github.com/tobozo/ESP32-ENC28J60/raw/main/examples/FOTA/bin/firmware.json"
+// test regular firmware (no compression)
+#define FOTA_URL "https://github.com/tobozo/ESP32-ENC28J60/raw/main/examples/FOTA/bin/firmware.json"
 
-#include <ESP32-targz.h>
-#define FOTA_URL "https://github.com/tobozo/ESP32-ENC28J60/raw/main/examples/FOTA/bin/firmware.gz.json"
+// test with gzip compression
+//#include <ESP32-targz.h> // https://github.com/tobozo/ESP32-targz.h
+//#define FOTA_URL "https://github.com/tobozo/ESP32-ENC28J60/raw/main/examples/FOTA/bin/firmware.gz.json"
 
-//#include <flashz.hpp>
+
+// test with zlib compression
+//#include <flashz.hpp> // https://github.com/vortigont/esp32-flashz
 //#define FOTA_URL "https://github.com/tobozo/ESP32-ENC28J60/raw/main/examples/FOTA/bin/firmware.zz.json"
-
 
 
 #include <esp32FOTA.hpp> // https://github.com/chrisjoyce911/esp32FOTA
 #include <debug/test_fota_common.h>
 
 // esp32fota settings
-int firmware_version_major  = 1;
+int firmware_version_major  = 0;
 int firmware_version_minor  = 1;
 int firmware_version_patch  = 0;
-
-
-
-
 const char* firmware_name   = "esp32-fota-http";
 const bool check_signature  = false;
 const bool disable_security = true;
 // for debug only
-const char* title           = "1.1";
+const char* title           = "0.1";
 const char* description     = "Basic Ethernet example with no security and no filesystem";
+
 
 esp32FOTA FOTA;
 
+
 static bool eth_connected = false;
+
 
 static bool EthernetConnected()
 {
@@ -71,23 +73,13 @@ void WiFiEvent(WiFiEvent_t event)
   switch (event) {
     case ARDUINO_EVENT_ETH_START:
       Serial.println("ETH Started");
-      //set eth hostname here
       ETH.setHostname("esp32-ethernet");
       break;
     case ARDUINO_EVENT_ETH_CONNECTED:
       Serial.println("ETH Connected");
       break;
     case ARDUINO_EVENT_ETH_GOT_IP:
-      Serial.print("ETH MAC: ");
-      Serial.print(ETH.macAddress());
-      Serial.print(", IPv4: ");
-      Serial.print(ETH.localIP());
-      if (ETH.fullDuplex()) {
-        Serial.print(", FULL_DUPLEX");
-      }
-      Serial.print(", ");
-      Serial.print(ETH.linkSpeed());
-      Serial.println("Mbps");
+      Serial.printf("ETH MAC: %s, IPv4: %s%s, %dMbps\n", ETH.macAddress().c_str(), ETH.localIP().toString().c_str(), ETH.fullDuplex()?", FULL_DUPLEX":"", ETH.linkSpeed() );
       eth_connected = true;
       break;
     case ARDUINO_EVENT_ETH_DISCONNECTED:
