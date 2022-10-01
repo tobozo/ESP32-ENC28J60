@@ -1,5 +1,5 @@
 /*
- ENC28J60-ETH.h - ETH PHY support for ENC28J60
+ ESP32-ENC28J60.h - ETH PHY support for ENC28J60
  Based on ETH.h from Arduino-esp32 and ENC28J60 component from esp-idf.
 
  This library is free software; you can redistribute it and/or
@@ -17,7 +17,7 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "ENC28J60-ETH.h"
+#include "ESP32-ENC28J60.h"
 
 
 extern "C" {

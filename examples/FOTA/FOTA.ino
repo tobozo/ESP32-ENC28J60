@@ -6,7 +6,7 @@
 #include <ESP32-ENC28J60.h>
 
 #define SPI_HOST       1
-#define SPI_CLOCK_MHZ  8
+#define SPI_CLOCK_MHZ  20
 #define INT_GPIO       4
 //
 #if CONFIG_IDF_TARGET_ESP32
@@ -27,9 +27,37 @@
 #endif
 
 
+#include <ESP32-targz.h>
+#include <esp32FOTA.hpp> // https://github.com/chrisjoyce911/esp32FOTA
+#include <debug/test_fota_common.h>
+
+// esp32fota settings
+int firmware_version_major  = 1;
+int firmware_version_minor  = 1;
+int firmware_version_patch  = 0;
+
+#if !defined FOTA_URL
+  #define FOTA_URL "https://phpsecu.re/esp32/esp32fota/firmware.json"
+#endif
+
+const char* firmware_name   = "esp32-fota-http";
+const bool check_signature  = false;
+const bool disable_security = true;
+// for debug only
+const char* title           = "1.1";
+const char* description     = "Basic Ethernet example with no security and no filesystem";
+
+esp32FOTA FOTA;
+
 static bool eth_connected = false;
 
+static bool EthernetConnected()
+{
+  return eth_connected;
+}
 
+
+// using WiFiEvent to handle Ethernet events :-)
 void WiFiEvent(WiFiEvent_t event)
 {
   switch (event) {
@@ -67,59 +95,41 @@ void WiFiEvent(WiFiEvent_t event)
   }
 }
 
-#include <HTTPClient.h>
-#include <WiFiClientSecure.h>
-
-HTTPClient http;
-WiFiClientSecure client;
-
-
-void testClient(const char * url)
-{
-  Serial.printf("\nConnecting to %s\n", url);
-
-  http.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
-
-  if( String(url).startsWith("https") ) {
-    client.setInsecure();
-    http.begin( client, url );
-  } else {
-    http.begin( url );
-  }
-
-  int httpCode = http.GET();
-
-  if( httpCode != HTTP_CODE_OK && httpCode != HTTP_CODE_MOVED_PERMANENTLY ) {
-    Serial.printf("Error: Status %i\n", httpCode );
-  }
-
-  Stream* stream = http.getStreamPtr();
-
-  while (stream->available()) {
-    Serial.write(stream->read());
-  }
-
-  Serial.println("closing connection\n");
-  http.end();
-}
-
 
 void setup()
 {
-  Serial.begin( 115200 );
-  WiFi.onEvent( WiFiEvent );
-  ETH.begin( MISO_GPIO, MOSI_GPIO, SCLK_GPIO, CS_GPIO, INT_GPIO, SPI_CLOCK_MHZ, SPI_HOST );
+  Serial.begin(115200);
 
-  while( !eth_connected) {
-    Serial.println("Connecting...");
-    delay( 1000 );
+  PrintFOTAInfo();
+
+  {
+    auto cfg = FOTA.getConfig();
+    cfg.name         = firmware_name;
+    cfg.manifest_url = FOTA_URL;
+    cfg.sem          = SemverClass( firmware_version_major, firmware_version_minor, firmware_version_patch );
+    cfg.check_sig    = check_signature;
+    cfg.unsafe       = disable_security;
+    //cfg.root_ca      = MyRootCA;
+    //cfg.pub_key      = MyRSAKey;
+    FOTA.setConfig( cfg );
+    FOTA.setStatusChecker( EthernetConnected );
+    //GzUpdateClass::getInstance().useDict( true );
   }
 
-  testClient("https://google.com");
+  WiFi.onEvent( WiFiEvent );
+  ETH.begin( MISO_GPIO, MOSI_GPIO, SCLK_GPIO, CS_GPIO, INT_GPIO, SPI_CLOCK_MHZ, SPI_HOST );
 
 }
 
 
 void loop()
 {
+  if( !eth_connected) {
+    Serial.println("Connecting...");
+    delay(1000);
+    return;
+  }
+  FOTA.handle();
+  delay(20000);
 }
+
