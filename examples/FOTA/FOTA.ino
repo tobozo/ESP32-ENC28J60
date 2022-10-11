@@ -28,11 +28,11 @@
 
 
 // test regular firmware (no compression)
-#define FOTA_URL "https://github.com/tobozo/ESP32-ENC28J60/raw/main/examples/FOTA/bin/firmware.json"
+// #define FOTA_URL "https://github.com/tobozo/ESP32-ENC28J60/raw/main/examples/FOTA/bin/firmware.json"
 
 // test with gzip compression
-//#include <ESP32-targz.h> // https://github.com/tobozo/ESP32-targz.h
-//#define FOTA_URL "https://github.com/tobozo/ESP32-ENC28J60/raw/main/examples/FOTA/bin/firmware.gz.json"
+#include <ESP32-targz.h> // https://github.com/tobozo/ESP32-targz.h
+#define FOTA_URL "https://github.com/tobozo/ESP32-ENC28J60/raw/main/examples/FOTA/bin/firmware.gz.json"
 
 
 // test with zlib compression
