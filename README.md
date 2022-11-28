@@ -6,4 +6,4 @@ This Ethernet Library is a copy of the official [esp32-arduino Ethernet Library]
 
 Low level code comes from the [eth_enc28j60 component](https://github.com/espressif/esp-idf/tree/master/examples/ethernet/enc28j60/components/eth_enc28j60) found in the esp-idf examples folder.
 
-For a more thorough implementation see [@khoih-prog](https://github.com/khoih-prog)'s [WebServer_ESP32_ENC](https://github.com/khoih-prog/WebServer_ESP32_ENC).
+For a more thorough implementation see [@khoih-prog](https://github.com/khoih-prog)'s [WebServer_ESP32_ENC](https://github.com/khoih-prog/WebServer_ESP32_ENC) and [AsyncWebServer_ESP32_ENC](https://github.com/khoih-prog/AsyncWebServer_ESP32_ENC)
