@@ -12,14 +12,14 @@
 
 
 
-esp_eth_mac_t* enc28j60_new_mac( spi_device_handle_t *spi_handle, int INT_GPIO )
+esp_eth_mac_t* enc28j60_new_mac(int SPI_HOST, spi_device_interface_config_t* spi_devcfg, int INT_GPIO )
 {
-    eth_enc28j60_config_t enc28j60_config = ETH_ENC28J60_DEFAULT_CONFIG( *spi_handle );
+    eth_enc28j60_config_t enc28j60_config = ETH_ENC28J60_DEFAULT_CONFIG(SPI_HOST, *spi_devcfg);
     enc28j60_config.int_gpio_num = INT_GPIO;
 
     eth_mac_config_t mac_config = ETH_MAC_DEFAULT_CONFIG();
-    mac_config.smi_mdc_gpio_num  = -1; // ENC28J60 doesn't have SMI interface
-    mac_config.smi_mdio_gpio_num = -1;
+    //mac_config.smi_mdc_gpio_num  = -1; // ENC28J60 doesn't have SMI interface
+    //mac_config.smi_mdio_gpio_num = -1;
     // mac_config.rx_task_prio      = 1;
     return esp_eth_mac_new_enc28j60( &enc28j60_config, &mac_config );
 }
@@ -41,8 +41,6 @@ esp_eth_mac_t* enc28j60_begin(int MISO_GPIO, int MOSI_GPIO, int SCLK_GPIO, int C
 
     spi_device_interface_config_t devcfg =
     {
-        .command_bits     = 3,
-        .address_bits     = 5,
         .mode             = 0,
         .clock_speed_hz   = SPI_CLOCK_MHZ * 1000 * 1000,
         .spics_io_num     = CS_GPIO,
@@ -50,8 +48,5 @@ esp_eth_mac_t* enc28j60_begin(int MISO_GPIO, int MOSI_GPIO, int SCLK_GPIO, int C
         .cs_ena_posttrans = enc28j60_cal_spi_cs_hold_time(SPI_CLOCK_MHZ),
     };
 
-    spi_device_handle_t spi_handle = NULL;
-    if(ESP_OK != spi_bus_add_device( SPI_HOST, &devcfg, &spi_handle )) return NULL;
-
-    return enc28j60_new_mac( &spi_handle, INT_GPIO );
+    return enc28j60_new_mac( SPI_HOST, &devcfg, INT_GPIO );
 }
