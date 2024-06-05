@@ -20,6 +20,7 @@
 #ifndef _ENC28J60_ESP32_ETH_H_
 #define _ENC28J60_ESP32_ETH_H_
 
+#include "Network.h"
 #include "WiFi.h"
 #include "esp_system.h"
 #include "esp_eth.h"
@@ -73,8 +74,8 @@ public:
     uint8_t* macAddress(uint8_t* mac);
     String macAddress();
 
-    friend class WiFiClient;
-    friend class WiFiServer;
+    friend class NetworkClient;
+    friend class NetworkServer;
 };
 
 extern ENC28J60Class ETH;

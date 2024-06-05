@@ -76,7 +76,7 @@ ENC28J60Class::~ENC28J60Class() {}
 esp_netif_t *eth_netif{nullptr};
 //bool ENC28J60Class::begin(uint8_t phy_addr, int power, int mdc, int mdio, eth_phy_type_t type, eth_clock_mode_t clock_mode, bool use_mac_from_efuse)
 bool ENC28J60Class::begin(int MISO_GPIO, int MOSI_GPIO, int SCLK_GPIO, int CS_GPIO, int INT_GPIO, int SPI_CLOCK_MHZ, int SPI_HOST, uint8_t* ENC28J60_Mac) {
-  tcpipInit();
+  Network.begin();
 
   //uint8_t ENC28J60_Default_Mac[6] = { 0x02, 0x00, 0x00, 0x12, 0x34, 0x56 };
 

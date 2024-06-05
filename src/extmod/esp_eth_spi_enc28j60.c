@@ -14,7 +14,7 @@
 
 esp_eth_mac_t* enc28j60_new_mac(int SPI_HOST, spi_device_interface_config_t* spi_devcfg, int INT_GPIO )
 {
-    eth_enc28j60_config_t enc28j60_config = ETH_ENC28J60_DEFAULT_CONFIG(SPI_HOST, *spi_devcfg);
+    eth_enc28j60_config_t enc28j60_config = ETH_ENC28J60_DEFAULT_CONFIG(SPI_HOST, spi_devcfg);
     enc28j60_config.int_gpio_num = INT_GPIO;
 
     eth_mac_config_t mac_config = ETH_MAC_DEFAULT_CONFIG();
