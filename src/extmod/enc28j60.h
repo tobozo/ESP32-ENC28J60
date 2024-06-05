@@ -18,10 +18,10 @@
 extern "C" {
 #endif
 
-/**
- * @brief SPI Instruction Set
- *
- */
+	/**
+	 * @brief SPI Instruction Set
+	 *
+	 */
 #define ENC28J60_SPI_CMD_RCR (0x00) // Read Control Register
 #define ENC28J60_SPI_CMD_RBM (0x01) // Read Buffer Memory
 #define ENC28J60_SPI_CMD_WCR (0x02) // Write Control Register
@@ -30,23 +30,23 @@ extern "C" {
 #define ENC28J60_SPI_CMD_BFC (0x05) // Bit Field Clear
 #define ENC28J60_SPI_CMD_SRC (0x07) // Soft Reset
 
-/**
- * @brief Shared Registers in ENC28J60 (accessible on each bank)
- *
- */
+	 /**
+	  * @brief Shared Registers in ENC28J60 (accessible on each bank)
+	  *
+	  */
 #define ENC28J60_EIE      (0x1B) // Ethernet Interrupt Enable
 #define ENC28J60_EIR      (0x1C) // Ethernet Interrupt flags
 #define ENC28J60_ESTAT    (0x1D) // Ethernet Status
 #define ENC28J60_ECON2    (0x1E) // Ethernet Control Register2
 #define ENC28J60_ECON1    (0x1F) // Ethernet Control Register1
 
-/**
- * @brief Per-bank Registers in ENC28J60
- * @note Address[15:12]: Register Type, 0 -> ETH, 1 -> MII/MAC
- *       Address[11:8] : Bank address
- *       Address[7:0]  : Register Index
- */
-// Bank 0 Registers
+	  /**
+	   * @brief Per-bank Registers in ENC28J60
+	   * @note Address[15:12]: Register Type, 0 -> ETH, 1 -> MII/MAC
+	   *       Address[11:8] : Bank address
+	   *       Address[7:0]  : Register Index
+	   */
+	   // Bank 0 Registers
 #define ENC28J60_ERDPTL   (0x0000) // Read Pointer Low Byte ERDPT<7:0>)
 #define ENC28J60_ERDPTH   (0x0001) // Read Pointer High Byte (ERDPT<12:8>)
 #define ENC28J60_EWRPTL   (0x0002) // Write Pointer Low Byte (EWRPT<7:0>)
@@ -137,7 +137,7 @@ extern "C" {
  * @brief status and flag of ENC28J60 specific registers
  *
  */
-// EIE bit definitions
+ // EIE bit definitions
 #define EIE_INTIE     (1<<7) // Global INT Interrupt Enable
 #define EIE_PKTIE     (1<<6) // Receive Packet Pending Interrupt Enable
 #define EIE_DMAIE     (1<<5) // DMA Interrupt Enable
