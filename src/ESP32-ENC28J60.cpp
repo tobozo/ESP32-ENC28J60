@@ -23,16 +23,21 @@
 #include "esp_eth.h"
 #include "esp_event.h"
 #include "esp_mac.h"
-#if CONFIG_IDF_TARGET_ESP32
-#include "soc/emac_ext_struct.h"
-#include "soc/rtc.h"
-extern "C" {
-  esp_eth_mac_t* enc28j60_begin(int MISO_GPIO, int MOSI_GPIO, int SCLK_GPIO, int CS_GPIO, int INT_GPIO, int SPI_CLOCK_MHZ, int SPI_HOST);
-#include "extmod/esp_eth_enc28j60.h"
-}
-//#include "soc/io_mux_reg.h"
-//#include "hal/gpio_hal.h"
+
+#if __has_include("soc/emac_ext_struct.h")
+  #include "soc/emac_ext_struct.h"
+#else
+  #define SOC_HAS_NO_EMAC
+  #include "extmod/emac_ext_struct.h"
 #endif
+
+#include "soc/rtc.h"
+extern "C"
+{
+  esp_eth_mac_t* enc28j60_begin(int MISO_GPIO, int MOSI_GPIO, int SCLK_GPIO, int CS_GPIO, int INT_GPIO, int SPI_CLOCK_MHZ, int SPI_HOST);
+  #include "extmod/esp_eth_enc28j60.h"
+}
+
 
 #include "lwip/err.h"
 #include "lwip/dns.h"

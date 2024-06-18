@@ -4,8 +4,11 @@
 */
 
 #include <ESP32-ENC28J60.h>
+#include <HTTPClient.h>
+#include <WiFi.h>
+#include <NetworkClientSecure.h>
 
-#define SPI_HOST       1
+#define ENC_SPI_HOST   1
 #define SPI_CLOCK_MHZ  8
 #define INT_GPIO       4
 //
@@ -67,11 +70,10 @@ void WiFiEvent(WiFiEvent_t event)
   }
 }
 
-#include <HTTPClient.h>
-#include <WiFiClientSecure.h>
+
 
 HTTPClient http;
-WiFiClientSecure client;
+NetworkClientSecure client;
 
 
 void testClient(const char * url)
@@ -108,7 +110,7 @@ void setup()
 {
   Serial.begin( 115200 );
   WiFi.onEvent( WiFiEvent );
-  ETH.begin( MISO_GPIO, MOSI_GPIO, SCLK_GPIO, CS_GPIO, INT_GPIO, SPI_CLOCK_MHZ, SPI_HOST );
+  ETH.begin( MISO_GPIO, MOSI_GPIO, SCLK_GPIO, CS_GPIO, INT_GPIO, SPI_CLOCK_MHZ, ENC_SPI_HOST );
 
   while( !eth_connected) {
     Serial.println("Connecting...");
