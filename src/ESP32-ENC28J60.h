@@ -28,7 +28,7 @@
 //#include "esp_netif.h"//esp_eth_driver.h"//***********
 static uint8_t ENC28J60_Default_Mac[] = { 0xFE, 0xED, 0xDE, 0xAD, 0xBE, 0xEF };
 #if ESP_IDF_VERSION_MAJOR < 4 || ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(4,4,0)
-#error "This version of Arduino is too old"
+    #error "This version of arduino-esp32 core is too old"
 #endif
 
 
